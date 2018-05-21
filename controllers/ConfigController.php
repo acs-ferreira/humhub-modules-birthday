@@ -2,8 +2,10 @@
 
 namespace humhub\modules\birthday\controllers;
 
-use Yii;
+use humhub\modules\admin\components\Controller;
+use humhub\modules\birthday\models\BirthdayConfigureForm;
 use humhub\models\Setting;
+use Yii;
 
 /**
  * Defines the configure actions.
@@ -11,7 +13,7 @@ use humhub\models\Setting;
  * @package humhub.modules.birthday.controllers
  * @author Sebastian Stumpf
  */
-class ConfigController extends \humhub\modules\admin\components\Controller
+class ConfigController extends Controller
 {
 
     /**
@@ -19,7 +21,7 @@ class ConfigController extends \humhub\modules\admin\components\Controller
      */
     public function actionIndex()
     {
-        $form = new \humhub\modules\birthday\models\BirthdayConfigureForm();
+        $form = new BirthdayConfigureForm();
         $form->shownDays = Setting::Get('shownDays', 'birthday');
         $form->excludedGroup = Setting::Get('excludedGroup', 'birthday');
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
@@ -28,9 +30,7 @@ class ConfigController extends \humhub\modules\admin\components\Controller
             return $this->redirect(['/birthday/config']);
         }
 
-        return $this->render('index', array('model' => $form));
+        return $this->render('index', ['model' => $form]);
     }
 
 }
-
-?>
