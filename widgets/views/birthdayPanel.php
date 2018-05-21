@@ -1,5 +1,7 @@
 <?php
 
+use humhub\modules\birthday\Assets;
+use humhub\widgets\PanelMenu;
 use yii\helpers\Html;
 
 /**
@@ -10,45 +12,45 @@ use yii\helpers\Html;
  * @package humhub.modules.birthday.widgets.views
  * @author Sebastian Stumpf
  */
-$assets = \humhub\modules\birthday\Assets::register($this);
+$assets = Assets::register($this);
 ?>
 
 <div class="panel panel-default panel-birthday" id="panel-birthday">
-    <?= \humhub\widgets\PanelMenu::widget(['id' => 'panel-birthday']); ?>
+    <?= PanelMenu::widget(['id' => 'panel-birthday']); ?>
     <div class="panel-heading">
-        <?php echo Yii::t('BirthdayModule.base', '<strong>Birthdays</strong> within the next {days} days', ['days' => $dayRange]); ?>
+        <?= Yii::t('BirthdayModule.base', '<strong>Birthdays</strong> within the next {days} days', ['days' => $dayRange]); ?>
     </div>
     <div id="birthdayContent">
         <ul id="birthdayList" class="media-list">
 
-            <?php foreach ($users as $user): ?>
+            <?php foreach ($users as $user) : ?>
                 <?php
                 $remainingDays = $this->context->getDays($user);
                 ?>
                 <li class="birthdayEntry">
-                    <a href="<?php echo $user->getUrl(); ?>">
+                    <a href="<?= $user->getUrl(); ?>">
                         <div class="media">
                             <!-- Show user image -->
                             <img class="media-object img-rounded pull-left" data-src="holder.js/32x32"
                                  alt="32x32"
                                  style="width: 32px; height: 32px;"
-                                 src="<?php echo $user->getProfileImage()->getUrl(); ?>">
+                                 src="<?= $user->getProfileImage()->getUrl(); ?>">
                                  <?php if ($remainingDays == 0) : ?>
-                                <img class="media-object img-rounded img-birthday pull-left"
+                                 <img class="media-object img-rounded img-birthday pull-left"
                                      data-src="holder.js/16x16" alt="16x16"
                                      style="width: 16px; height: 16px;"
-                                     src="<?php echo $assets->baseUrl ?>/cake.png">
+                                     src="<?= $assets->baseUrl ?>/cake.png">
                                  <?php endif; ?>
 
                             <!-- Show content -->
                             <div class="media-body">
-                                <strong><?php echo Html::encode($user->displayName); ?></strong>
+                                <strong><?= Html::encode($user->displayName); ?></strong>
 
                                 <?php
                                 // show when the user has his birthday
                                 if ($remainingDays == 0) {
                                     echo ' <span class="label label-danger pull-right">' . Yii::t('BirthdayModule.base', 'today') . '</span>';
-                                } else if ($remainingDays == 1) {
+                                } elseif ($remainingDays == 1) {
                                     echo ' <span class="label label-default pull-right">' . Yii::t('BirthdayModule.base', 'Tomorrow') . '</span>';
                                 } else {
                                     echo ' <span class="label label-default pull-right">' . Yii::t('BirthdayModule.base', 'In {days} days', ['days' => $remainingDays]) . '</span>';
