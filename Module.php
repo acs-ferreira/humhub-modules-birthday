@@ -2,9 +2,9 @@
 
 namespace humhub\modules\birthday;
 
-use Yii;
 use humhub\modules\birthday\widgets\BirthdaySidebarWidget;
 use humhub\models\Setting;
+use Yii;
 use yii\helpers\Url;
 
 /**
@@ -32,7 +32,7 @@ class Module extends \humhub\components\Module
         }
         
         $module = Yii::$app->getModule('birthday');
-        $event->sender->addWidget(BirthdaySidebarWidget::className(), array(), array('sortOrder' => $module->sidebarSortOrder));
+        $event->sender->addWidget(BirthdaySidebarWidget::className(), [], ['sortOrder' => $module->sidebarSortOrder]);
     }
 
     /**
@@ -53,5 +53,3 @@ class Module extends \humhub\components\Module
     }
 
 }
-
-?>
