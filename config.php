@@ -7,7 +7,6 @@ return [
     'class' => 'humhub\modules\birthday\Module',
     'namespace' => 'humhub\modules\birthday',
     'events' => [
-        array('class' => Sidebar::className(), 'event' => Sidebar::EVENT_INIT, 'callback' => array('humhub\modules\birthday\Module', 'onSidebarInit')),
+        ['class' => Sidebar::className(), 'event' => Sidebar::EVENT_INIT, 'callback' => ['humhub\modules\birthday\Module', 'onSidebarInit']],
     ],
 ];
-?>
