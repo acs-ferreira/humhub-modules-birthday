@@ -2,9 +2,11 @@
 
 namespace humhub\modules\birthday\widgets;
 
-use Yii;
 use humhub\modules\user\models\User;
 use humhub\models\Setting;
+use Yii;
+use yii\base\Widget;
+use yii\db\Expression;
 
 /**
  * BirthdaySidebarWidget displays the users of upcoming birthdays.
@@ -14,14 +16,14 @@ use humhub\models\Setting;
  * @package humhub.modules.birthday.widgets
  * @author Sebastian Stumpf
  */
-class BirthdaySidebarWidget extends \yii\base\Widget
+class BirthdaySidebarWidget extends Widget
 {
 
     public function run()
     {
         $range = (int) Setting::Get('shownDays', 'birthday');
         $excludedGroup = (int) Setting::Get('excludedGroup', 'birthday');
-        $exclusionSql = "";
+        $exclusionSql = '';
         if ($excludedGroup > 0) {
             $exclusionSql = "NOT profile.user_id IN (SELECT group_user.user_id FROM group_user WHERE group_user.group_id= " . $excludedGroup . ") AND ";
         }
@@ -30,7 +32,7 @@ class BirthdaySidebarWidget extends \yii\base\Widget
         $birthdayCondition = $exclusionSql . $nextBirthDaySql . " BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL " . $range . " DAY)";
 
         $users = User::find()
-                ->addSelect(['*', 'user.*', 'profile.*', new \yii\db\Expression($nextBirthDaySql . ' as next_birthday')])
+                ->addSelect(['*', 'user.*', 'profile.*', new Expression($nextBirthDaySql . ' as next_birthday')])
                 ->joinWith('profile')
                 ->where($birthdayCondition)
                 ->addOrderBy(['next_birthday' => SORT_ASC])
@@ -42,10 +44,10 @@ class BirthdaySidebarWidget extends \yii\base\Widget
             return;
         }
 
-        return $this->render('birthdayPanel', array(
+        return $this->render('birthdayPanel', [
                     'users' => $users,
                     'dayRange' => $range
-        ));
+        ]);
     }
 
     public function getDays($user)
@@ -79,5 +81,3 @@ class BirthdaySidebarWidget extends \yii\base\Widget
     }
 
 }
-
-?>
